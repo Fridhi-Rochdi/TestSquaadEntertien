@@ -15,5 +15,11 @@ export class MemoryOperationRepository implements IOperationRepository {
         }
         sharedMemory.operations = sharedMemory.operations.filter((operation) => operation.id !== id);
     }
+    async createOperation(operation: Omit<Operation, 'id'>): Promise<Operation> {
+        const newId= Math.max(...sharedMemory.operations.map(op=>op.id),0)+1;
+        const newoperation ={id:newId, ...operation};
+        sharedMemory.operations.push(newoperation);
+        return newoperation;
+    }
 
 }

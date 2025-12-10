@@ -2,8 +2,13 @@ import Image from "next/image";
 import { Building, House, Plus } from "lucide-react";
 import { listOperations } from "@/lib/actions/listOperations";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ message?: string; error?: string }>;
+}) {
   const operations = await listOperations();
+  const params = await searchParams;
   
   return (
     <>
@@ -42,7 +47,18 @@ export default async function Home() {
         </div>
       </div>
     </div>
-    <div className="container mx-auto pt-10">
+    <div className="container mx-auto pt-10 px-4">
+      {params.message && (
+        <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+          {params.message}
+        </div>
+      )}
+      {params.error && (
+        <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          {params.error}
+        </div>
+      )}
+      
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-bold">Explore Our Properties</h1>
         <a href="/new" className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full"><Plus /> Add Property</a>
